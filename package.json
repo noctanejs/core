@@ -1,0 +1,28 @@
+{
+  "name": "Noctane",
+  "version": "0.0.1",
+  "description": "",
+  "author": "Ricardo Valeriano",
+  "private": false,
+  "scripts": {
+    "test": "jest",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ]
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ]
+  }
+}
