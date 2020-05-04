@@ -1,4 +1,4 @@
-import Grid from '../grid'
+import { Grid } from '../noctane'
 
 describe('Grid', () => {
   let config
