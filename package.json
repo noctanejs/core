@@ -1,9 +1,11 @@
 {
   "name": "@noctane/core",
   "version": "0.0.1",
-  "description": "",
+  "description": "A very low octane engine to build stuff.",
   "author": "Ricardo Valeriano",
   "private": false,
+  "license": "MIT",
+  "repository": "https://github.com/noctanejs/core",
   "main": "dist/noctane.cjs.js",
   "module": "dist/noctane.esm.js",
   "browser": "dist/noctane.umd.js",
