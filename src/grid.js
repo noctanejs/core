@@ -1,4 +1,9 @@
 const Styles = {
+  // TODO: better naming required XD.
+  //  This is to decide what to do with borders when total size
+  //  exceed the limits given by config.width and config.height.
+  //  inward means total size will be shortened.
+  //  ...
   inward: 'inward'
 }
 
@@ -64,7 +69,9 @@ const empty = (overrides) => {
     config: {
       ...config,
       width: width,
-      height: height
+      height: height,
+      cols: cols,
+      rows: rows
     }
   }
 }
@@ -76,7 +83,9 @@ const center = (grid) => {
   return grid[row][col]
 }
 
-const renderCell = (cell, context, config) => {
+const renderCell = (cell, context, overrides) => {
+  const config = { ...defaultConfig, ...overrides }
+
   context.beginPath()
   // bottom
   let startX = cell.x
