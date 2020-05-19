@@ -12,7 +12,7 @@
   "scripts": {
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
-    "build": "rollup -c --prod",
+    "build": "rollup -c --environment BUILD:production",
     "watch": "rollup -c -w"
   },
   "standard": {
