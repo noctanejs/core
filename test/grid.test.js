@@ -1,4 +1,4 @@
-import { Grid } from '../noctane'
+import Grid from 'grid'
 
 describe('Grid', () => {
   let config
@@ -119,6 +119,41 @@ describe('Grid', () => {
     })
   })
 
-  describe.skip('rendering', () => {
+  describe('rendering', () => {
+    describe('render', () => {
+      let config, grid, context
+
+      beforeEach(() => {
+        config = {
+          width: 300,
+          height: 300,
+          cellSize: 50,
+          borderSize: 2,
+          backgroundColor: '#f00'
+        }
+        grid = Grid.empty(config)
+
+        context = {
+          beginPath: jest.fn(),
+          fillRect: jest.fn(),
+          strokeRect: jest.fn(),
+          moveTo: jest.fn(),
+          lineTo: jest.fn(),
+          stroke: jest.fn()
+        }
+
+        Grid.render(grid.cells, context, config)
+      })
+
+      it('sets the background color correctly', () => {
+        expect(context.fillStyle).toBe('#f00')
+      })
+
+      it('draws the correct outer square', () => {
+        expect(context.fillRect.mock.calls[0]).toEqual([
+          0, 0, 300, 300
+        ])
+      })
+    })
   })
 })
