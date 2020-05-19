@@ -1,5 +1,4 @@
-import Grid from './grid'
+import grid from './grid'
+import render from './render'
 
-export default {
-  Grid: Grid
-}
+export { render as Render, grid as Grid }
