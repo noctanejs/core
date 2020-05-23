@@ -15,14 +15,20 @@ describe('Grid', () => {
   describe('generation', () => {
     describe('empty()', () => {
       test('calculates number of cols and rows that fit on a grid and generate it', () => {
-        const grid = Grid.empty(config).cells
+        const grid = Grid.empty(config).grid
 
         expect(grid.length).toBe(2)
         expect(grid[0].length).toBe(2)
       })
 
+      test('adds a copy of the original configuration on the return', () => {
+        const grid = Grid.empty(config)
+
+        expect(grid.config).toEqual(expect.objectContaining(config))
+      })
+
       test('calulate cell dimensions correctly', () => {
-        const grid = Grid.empty(config).cells
+        const grid = Grid.empty(config).grid
         const cell = grid[0][0]
 
         expect(cell).toEqual(
@@ -38,7 +44,7 @@ describe('Grid', () => {
       })
 
       test('form the right quadrant (goes down to the origin)', () => {
-        const grid = Grid.empty(config).cells
+        const grid = Grid.empty(config).grid
 
         expect(grid[0][0]).toEqual(
           expect.objectContaining({
@@ -58,7 +64,7 @@ describe('Grid', () => {
       describe('Uneven dimensions', () => {
         test('generates the correct amount of cells', () => {
           const newConfig = { ...config, width: 10, height: 16 }
-          const grid = Grid.empty(newConfig).cells
+          const grid = Grid.empty(newConfig).grid
 
           expect(grid.length).toBe(3)
           expect(grid[0].length).toBe(2)
@@ -93,7 +99,7 @@ describe('Grid', () => {
     describe('center()', () => {
       test('returns the most center cell in the grid', () => {
         const newConfig = { ...config, width: 15, height: 15 }
-        const grid = Grid.empty(newConfig).cells
+        const grid = Grid.empty(newConfig).grid
 
         expect(Grid.center(grid)).toEqual(
           expect.objectContaining({
@@ -106,7 +112,7 @@ describe('Grid', () => {
       describe('Uneven dimensions', () => {
         test('knows how to find the middle when sizes are uneven', () => {
           const newConfig = { ...config, width: 15, height: 21 }
-          const grid = Grid.empty(newConfig).cells
+          const grid = Grid.empty(newConfig).grid
 
           expect(Grid.center(grid)).toEqual(
             expect.objectContaining({
@@ -115,44 +121,6 @@ describe('Grid', () => {
             })
           )
         })
-      })
-    })
-  })
-
-  describe('rendering', () => {
-    describe('render', () => {
-      let config, grid, context
-
-      beforeEach(() => {
-        config = {
-          width: 300,
-          height: 300,
-          cellSize: 50,
-          borderSize: 2,
-          backgroundColor: '#f00'
-        }
-        grid = Grid.empty(config)
-
-        context = {
-          beginPath: jest.fn(),
-          fillRect: jest.fn(),
-          strokeRect: jest.fn(),
-          moveTo: jest.fn(),
-          lineTo: jest.fn(),
-          stroke: jest.fn()
-        }
-
-        Grid.render(grid.cells, context, config)
-      })
-
-      it('sets the background color correctly', () => {
-        expect(context.fillStyle).toBe('#f00')
-      })
-
-      it('draws the correct outer square', () => {
-        expect(context.fillRect.mock.calls[0]).toEqual([
-          0, 0, 300, 300
-        ])
       })
     })
   })

@@ -1,9 +1,11 @@
 import { Render, Grid } from '@noctane/core'
 
 const grid = Grid.empty()
+
 const canvas = document.getElementById('grid')
 const context = canvas.getContext('2d')
-const center = Grid.center(grid.cells)
+const center = Grid.center(grid.grid)
+
 const interval = 1000
 const colors = [
   '#f00',
@@ -45,19 +47,20 @@ const nextPosition = (currentPosition) => {
 }
 
 Render.loop((_) => {
+  const cells = grid.grid
   const now = Date.now()
   if ((now - state.lastRender) < interval) return
 
   state.lastRender = now
   state.currentPosition = nextPosition(state.currentPosition)
-  const cell = grid.cells[state.currentPosition.row][state.currentPosition.col]
+  const cell = cells[state.currentPosition.row][state.currentPosition.col]
   const color = colors[Math.floor(Math.random() * colors.length)]
 
-  Grid.render(grid.cells, context, {
+  Render.grid(cells, context, {
     width: canvas.width,
     height: canvas.height
   })
-  Grid.renderCell(cell, context, { backgroundColor: color })
+  Render.cell(cell, context, { backgroundColor: color })
 
   return { ...state }
 })
