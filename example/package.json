@@ -43,7 +43,6 @@
     "serve": "^11.3.0"
   },
   "dependencies": {
-    "@noctane/core": "file:..",
-    "save-dev": "0.0.1-security"
+    "@noctane/core": "file:.."
   }
 }
