@@ -1,6 +1,6 @@
 {
   "name": "@noctane/core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A very low octane engine to build stuff.",
   "author": "Ricardo Valeriano",
   "private": false,

@@ -24,10 +24,9 @@ describe('Render', () => {
         width: 300,
         height: 300,
         cellSize: 50,
-        borderSize: 2,
-        backgroundColor: '#f00'
+        borderSize: 2
       }
-      const grid = Grid.empty(config).grid
+      const grid = Grid.generate(config)
 
       context = {
         beginPath: jest.fn(),
@@ -42,7 +41,7 @@ describe('Render', () => {
         getContext: type => context
       }
 
-      Render.grid(grid, canvas, config)
+      Render.grid(grid, canvas, { cellColor: '#f00' })
     })
 
     it('sets the background color correctly', () => {
@@ -51,7 +50,7 @@ describe('Render', () => {
 
     it('draws the correct outer square', () => {
       expect(context.fillRect.mock.calls[0]).toEqual([
-        0, 0, 300, 300
+        0, 0, 262, 262
       ])
     })
   })

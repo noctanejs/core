@@ -65,7 +65,7 @@ Render.loop((_) => {
   const color = colors[Math.floor(Math.random() * colors.length)]
 
   Render.grid(grid, canvas, renderConfig)
-  Render.cell(cell, context, { cellColor: color })
+  Render.cell(cell, canvas, { cellColor: color })
 
   return { ...state }
 })

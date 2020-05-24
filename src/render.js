@@ -23,7 +23,8 @@ const loop = (callback, requestAnimationFrame = window.requestAnimationFrame, st
   }
 }
 
-const cell = (cell, context, overrides) => {
+const cell = (cell, canvas, overrides) => {
+  const context = canvas.getContext('2d')
   const config = { ...defaultConfig, ...overrides }
 
   context.fillStyle = config.cellColor
@@ -49,25 +50,27 @@ const grid = (grid, canvas, overrides) => {
   context.fillStyle = config.borderColor
   context.fillRect(0, 0, frame.width, frame.height)
 
-  renderAllCells(cells, context, config)
+  renderAllCells(cells, canvas, config)
 
   return grid
 }
 
-const renderAllCells = (grid, context, overrides) => {
+const renderAllCells = (grid, canvas, overrides) => {
   grid.forEach((cols, row) => {
     cols.forEach((_cell, col) => {
       const config = { ..._cell.config, ...overrides }
-      cell(_cell, context, config)
+      cell(_cell, canvas, config)
 
       if (config.debug) {
-        debug(_cell, `${_cell.x}:${_cell.y} ${row}:${col}`, context, config)
+        debug(_cell, `${_cell.x}:${_cell.y} ${row}:${col}`, canvas, config)
       }
     })
   })
 }
 
-const debug = (cell, text, context, config) => {
+const debug = (cell, text, canvas, config) => {
+  const context = canvas.getContext('2d')
+
   const position = {
     x: cell.x + config.borderSize,
     y: cell.y + config.borderSize + config.debugConfig.fontSize
