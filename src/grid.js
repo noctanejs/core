@@ -15,6 +15,33 @@ const defaultConfig = {
   borderStyle: Styles.inward
 }
 
+const generate = (overrides) => {
+  const config = { ...defaultConfig, ...overrides }
+  const totalCellSize = config.cellSize + config.borderSize
+  const rows = Math.floor(config.height / totalCellSize)
+  const height = rows * totalCellSize
+  const cols = Math.floor(config.width / totalCellSize)
+  const width = cols * totalCellSize
+
+  return {
+    grid: generateGrid(cols, rows, config),
+    config: {
+      ...config,
+      width: width,
+      height: height,
+      cols: cols,
+      rows: rows
+    }
+  }
+}
+
+const center = (grid) => {
+  const row = Math.floor(grid.length / 2)
+  const col = Math.floor(grid[0].length / 2)
+
+  return grid[row][col]
+}
+
 const createCell = (col, row, config) => {
   const x = (col * config.cellSize) + (col + 1) * config.borderSize
   const y = (row * config.cellSize) + (row + 1) * config.borderSize
@@ -33,7 +60,7 @@ const createCell = (col, row, config) => {
   }
 }
 
-const generateCells = (cols, rows, config) => {
+const generateGrid = (cols, rows, config) => {
   const cells = []
 
   for (let row = 0; row < rows; row++) {
@@ -47,35 +74,8 @@ const generateCells = (cols, rows, config) => {
   return cells
 }
 
-const empty = (overrides) => {
-  const config = { ...defaultConfig, ...overrides }
-  const totalCellSize = config.cellSize + config.borderSize
-  const rows = Math.floor(config.height / totalCellSize)
-  const height = rows * totalCellSize
-  const cols = Math.floor(config.width / totalCellSize)
-  const width = cols * totalCellSize
-
-  return {
-    grid: generateCells(cols, rows, config),
-    config: {
-      ...config,
-      width: width,
-      height: height,
-      cols: cols,
-      rows: rows
-    }
-  }
-}
-
-const center = (grid) => {
-  const row = Math.floor(grid.length / 2)
-  const col = Math.floor(grid[0].length / 2)
-
-  return grid[row][col]
-}
-
 const Grid = {
-  empty: empty,
+  generate: generate,
   center: center
 }
 

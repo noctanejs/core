@@ -23,20 +23,6 @@ const loop = (callback, requestAnimationFrame = window.requestAnimationFrame, st
   }
 }
 
-const configForCell = (cell, cellConfig) => {
-  let correctionForBorder = 0
-  if (cellConfig.borderSize % 2 !== 0) correctionForBorder = 0.5
-
-  return {
-    startX: cell.x + correctionForBorder,
-    startY: cell.y + cell.height + correctionForBorder,
-    bottomLineX: cell.x + cell.width + correctionForBorder,
-    bottomLineY: cell.y + cell.height + correctionForBorder,
-    leftLineX: cell.x + cell.width + correctionForBorder,
-    leftLineY: cell.y + correctionForBorder
-  }
-}
-
 const cell = (cell, context, overrides) => {
   const config = { ...defaultConfig, ...overrides, ...cell.config }
   const cellConfig = configForCell(cell, config)
@@ -60,25 +46,6 @@ const cell = (cell, context, overrides) => {
   context.stroke()
 }
 
-const startPosition = (grid, config) => {
-  const odd = config.borderSize % 2 !== 0
-
-  return odd ? 0.5 : 0
-}
-
-const renderAllCells = (grid, context, overrides) => {
-  grid.forEach((cols, row) => {
-    cols.forEach((_cell, col) => {
-      const config = { ..._cell.config, ...overrides }
-      cell(_cell, context, config)
-
-      if (config.debug) {
-        debug(_cell, `${_cell.x}:${_cell.y} ${row}:${col}`, context, config)
-      }
-    })
-  })
-}
-
 const grid = (grid, context, overrides) => {
   const config = { ...defaultConfig, ...overrides }
   const start = startPosition(grid, config)
@@ -94,6 +61,39 @@ const grid = (grid, context, overrides) => {
   renderAllCells(grid, context, config)
 
   return grid
+}
+
+const renderAllCells = (grid, context, overrides) => {
+  grid.forEach((cols, row) => {
+    cols.forEach((_cell, col) => {
+      const config = { ..._cell.config, ...overrides }
+      cell(_cell, context, config)
+
+      if (config.debug) {
+        debug(_cell, `${_cell.x}:${_cell.y} ${row}:${col}`, context, config)
+      }
+    })
+  })
+}
+
+const configForCell = (cell, cellConfig) => {
+  let correctionForBorder = 0
+  if (cellConfig.borderSize % 2 !== 0) correctionForBorder = 0.5
+
+  return {
+    startX: cell.x + correctionForBorder,
+    startY: cell.y + cell.height + correctionForBorder,
+    bottomLineX: cell.x + cell.width + correctionForBorder,
+    bottomLineY: cell.y + cell.height + correctionForBorder,
+    leftLineX: cell.x + cell.width + correctionForBorder,
+    leftLineY: cell.y + correctionForBorder
+  }
+}
+
+const startPosition = (grid, config) => {
+  const odd = config.borderSize % 2 !== 0
+
+  return odd ? 0.5 : 0
 }
 
 const debug = (cell, text, context, config) => {
