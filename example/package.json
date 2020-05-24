@@ -10,8 +10,8 @@
   "scripts": {
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
-    "build": "rollup -c --prod",
-    "watch": "rollup -c -w",
+    "build": "rollup -c --environment BUILD:production",
+    "watch": "rollup -cw",
     "serve": "serve"
   },
   "standard": {
