@@ -17,7 +17,7 @@ describe('Render', () => {
   })
 
   describe('grid()', () => {
-    let config, grid, context
+    let canvas, config, context
 
     beforeEach(() => {
       config = {
@@ -27,7 +27,7 @@ describe('Render', () => {
         borderSize: 2,
         backgroundColor: '#f00'
       }
-      grid = Grid.empty(config).grid
+      const grid = Grid.empty(config).grid
 
       context = {
         beginPath: jest.fn(),
@@ -38,7 +38,11 @@ describe('Render', () => {
         stroke: jest.fn()
       }
 
-      Render.grid(grid, context, config)
+      canvas = {
+        getContext: type => context
+      }
+
+      Render.grid(grid, canvas, config)
     })
 
     it('sets the background color correctly', () => {

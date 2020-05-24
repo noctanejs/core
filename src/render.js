@@ -1,6 +1,6 @@
 const defaultConfig = {
-  backgroundColor: '#fff',
-  borderColor: '#f00',
+  borderColor: '#000',
+  cellColor: '#999',
 
   debug: false,
   debugConfig: {
@@ -24,41 +24,32 @@ const loop = (callback, requestAnimationFrame = window.requestAnimationFrame, st
 }
 
 const cell = (cell, context, overrides) => {
-  const config = { ...defaultConfig, ...overrides, ...cell.config }
-  const cellConfig = configForCell(cell, config)
+  const config = { ...defaultConfig, ...overrides }
 
-  // top
-  context.fillStyle = config.backgroundColor
-  context.fillRect(cell.x, cell.y, config.cellSize, config.cellSize)
-
-  context.beginPath()
-
-  // bottom
-  context.moveTo(cellConfig.startX, cellConfig.startY)
-  context.lineTo(cellConfig.bottomLineX, cellConfig.bottomLineY)
-
-  // left
-  context.lineTo(cellConfig.leftLineX, cellConfig.leftLineY)
-
-  context.strokeStyle = config.borderColor
-  context.lineWidth = config.borderSize
-  context.lineCap = 'square'
-  context.stroke()
+  context.fillStyle = config.cellColor
+  context.fillRect(cell.x, cell.y, cell.width, cell.height)
 }
 
-const grid = (grid, context, overrides) => {
+const grid = (grid, canvas, overrides) => {
+  const cells = grid.grid
+  const context = canvas.getContext('2d')
   const config = { ...defaultConfig, ...overrides }
-  const start = startPosition(grid, config)
 
-  // border
-  context.strokeStyle = config.borderColor
-  context.strokeRect(start, start, config.width, config.height)
+  const frame = {
+    x: grid.config.borderSize,
+    y: grid.config.borderSize,
+    width: grid.config.width + grid.config.borderSize,
+    height: grid.config.height + grid.config.borderSize
+  }
+
+  canvas.width = frame.width
+  canvas.height = frame.height
 
   // square
-  context.fillStyle = config.backgroundColor
-  context.fillRect(start, start, config.width, config.height)
+  context.fillStyle = config.borderColor
+  context.fillRect(0, 0, frame.width, frame.height)
 
-  renderAllCells(grid, context, config)
+  renderAllCells(cells, context, config)
 
   return grid
 }
@@ -74,26 +65,6 @@ const renderAllCells = (grid, context, overrides) => {
       }
     })
   })
-}
-
-const configForCell = (cell, cellConfig) => {
-  let correctionForBorder = 0
-  if (cellConfig.borderSize % 2 !== 0) correctionForBorder = 0.5
-
-  return {
-    startX: cell.x + correctionForBorder,
-    startY: cell.y + cell.height + correctionForBorder,
-    bottomLineX: cell.x + cell.width + correctionForBorder,
-    bottomLineY: cell.y + cell.height + correctionForBorder,
-    leftLineX: cell.x + cell.width + correctionForBorder,
-    leftLineY: cell.y + correctionForBorder
-  }
-}
-
-const startPosition = (grid, config) => {
-  const odd = config.borderSize % 2 !== 0
-
-  return odd ? 0.5 : 0
 }
 
 const debug = (cell, text, context, config) => {
