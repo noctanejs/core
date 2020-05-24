@@ -1,6 +1,14 @@
 import { Render, Grid } from '@noctane/core'
 
-const grid = Grid.empty()
+const grid = Grid.generate({
+  borderSize: 1,
+  cellSize: 30
+})
+
+const renderConfig = {
+  borderColor: '#ff926b',
+  cellColor: '#fff3cd'
+}
 
 const canvas = document.getElementById('grid')
 const context = canvas.getContext('2d')
@@ -8,15 +16,18 @@ const center = Grid.center(grid.grid)
 
 const interval = 1000
 const colors = [
-  '#f00',
-  '#0f0',
-  '#00f',
-  '#a00',
-  '#0a0',
-  '#00a',
-  '#500',
-  '#050',
-  '#005'
+  '#fee2b3',
+  '#ffa299',
+  '#ad6989',
+  '#562349',
+  '#ffcbcb',
+  '#d291bc',
+  '#aacfcf',
+  '#679b9b',
+  '#303960',
+  '#ea9a96',
+  '#f8b24f',
+  '#5c2a9d'
 ]
 
 const state = {
@@ -27,9 +38,6 @@ const state = {
     row: center.row
   }
 }
-
-canvas.width = 400
-canvas.height = 400
 
 const nextPosition = (currentPosition) => {
   // Randomize the next position to pick in the grid
@@ -56,11 +64,8 @@ Render.loop((_) => {
   const cell = cells[state.currentPosition.row][state.currentPosition.col]
   const color = colors[Math.floor(Math.random() * colors.length)]
 
-  Render.grid(cells, context, {
-    width: canvas.width,
-    height: canvas.height
-  })
-  Render.cell(cell, context, { backgroundColor: color })
+  Render.grid(grid, canvas, renderConfig)
+  Render.cell(cell, context, { cellColor: color })
 
   return { ...state }
 })
